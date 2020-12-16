@@ -19,10 +19,7 @@ namespace indexer.service
         {
             List<string> pathsToScan = new List<string>(args);
 
-            string defaultPath = Path.Combine("/", "media", "sheigl", "nas_everyone");
-
-            if (!pathsToScan.Any())
-                pathsToScan.Add(defaultPath);
+            Console.WriteLine($"Indexing {(String.Join(", ", pathsToScan))}");
 
             List<FileEntry> files  = new List<FileEntry>();
 
