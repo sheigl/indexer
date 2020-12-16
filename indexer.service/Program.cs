@@ -66,13 +66,9 @@ namespace indexer.service
 
             foreach (var item in directory.EnumerateFiles())
             {
-                if (item.Name.StartsWith("."))
-                    continue;
-
                 Console.WriteLine($"Saving {item.FullName}");
 
-                string path = item.FullName.Replace(item.Name, "");
-                path = path.Substring(0, path.Length - 1);
+                string path = item.FullName.Replace(item.Name, "").Trim().TrimEnd('/');
 
                 files.Add(new FileEntry
                 {
@@ -90,9 +86,6 @@ namespace indexer.service
 
             foreach (var item in directory.EnumerateDirectories())
             {
-                if (item.Name.StartsWith("."))
-                    continue;
-
                 GetFilesRecursive(item, files);
             }
         }
