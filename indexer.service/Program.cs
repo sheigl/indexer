@@ -7,6 +7,10 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using indexer.common.Models;
+using indexer.service.Clients;
+using indexer.service.Support;
+using McMaster.Extensions.CommandLineUtils;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
@@ -14,6 +18,39 @@ namespace indexer.service
 {
     class Program
     {
+        static async Task Main(string[] args) => await BuildApp().ExecuteAsync(args);
+
+        private static CommandLineApplication BuildApp()
+        {
+            CommandLineApplication app = new CommandLineApplication<RootCommand>();
+            app.Conventions.UseDefaultConventions()
+                .UseConstructorInjection(ConfigureServices());
+
+            return app;
+        }
+
+        private static IServiceProvider ConfigureServices()
+        {
+            ServiceCollection services = new ServiceCollection(); 
+
+            services
+                .AddSingleton<IConfiguration>(ConfigureConfiguration())
+                .AddSingleton<IConsole>(PhysicalConsole.Singleton)
+                .AddScoped<FileSystemObserver>()
+                .AddHttpClient<ApiClient>((provider, client) => client.BaseAddress = new Uri(provider.GetRequiredService<IConfiguration>()["apibase"]));
+
+            return services.BuildServiceProvider();
+        }
+
+        private static IConfiguration ConfigureConfiguration()
+        {
+            ConfigurationBuilder builder = new ConfigurationBuilder();
+            builder.AddEnvironmentVariables("ASPNETCORE_");
+
+            return builder.Build();
+        }
+
+        /*
         private static HttpClient _client = new HttpClient();
         static async Task Main(string[] args)
         {
@@ -88,6 +125,6 @@ namespace indexer.service
             {
                 GetFilesRecursive(item, files);
             }
-        }
+        }*/
     }
 }

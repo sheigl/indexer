@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -30,7 +31,7 @@ namespace indexer.api
             services.AddControllers()
                 .AddJsonOptions(opts => opts.JsonSerializerOptions.WriteIndented = true);
 
-            services.AddDbContext<IndexerContext>(opts => opts.UseSqlite("Filename=database.db", options =>
+            services.AddDbContext<IndexerContext>(opts => opts.UseSqlServer(Configuration.GetConnectionString("default"), options =>
            {
                options.MigrationsAssembly(Assembly.GetExecutingAssembly().FullName);
            }));

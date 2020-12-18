@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -26,7 +22,8 @@ namespace indexer.api
                         opts.ClearProviders();
                         opts.SetMinimumLevel(LogLevel.Trace);
                         opts.AddConsole();
-                    });
+                    })
+                    .ConfigureAppConfiguration((context, opts) => opts.AddEnvironmentVariables("ASPNETCORE_"));
                 });
     }
 }
