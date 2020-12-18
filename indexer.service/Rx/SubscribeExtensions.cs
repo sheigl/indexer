@@ -14,8 +14,8 @@ namespace indexer.service.Rx
                 .Concat()
                 .Subscribe(
                 e => { }, // empty
-                observer.OnErrorAsync,
-                observer.OnCompletedAsync);
+                observer.OnError,
+                observer.OnCompleted);
         }
     }
 }

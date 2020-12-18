@@ -5,8 +5,8 @@ namespace indexer.service.Support
 {
     public interface IAsyncObserver<T>
     {
-        Task OnCompletedAsync();
-        Task OnErrorAsync(Exception error);
+        void OnCompleted();
+        void OnError(Exception error);
         Task OnNextAsync(T value);
     }
 }

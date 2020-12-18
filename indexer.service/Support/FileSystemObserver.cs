@@ -16,24 +16,23 @@ namespace indexer.service.Support
             _provider = provider;
         }
 
-        public Task OnCompletedAsync()
+        public void OnCompleted()
         {
             throw new NotImplementedException();
         }
 
-        public Task OnErrorAsync(Exception error)
+        public void OnError(Exception error)
         {
             throw new NotImplementedException();
         }
 
-        public Task OnNextAsync(FileSystemEventArgs value)
+        public async Task OnNextAsync(FileSystemEventArgs value)
         {
             using (var scope = _provider.CreateScope())
             {
                 var client = scope.ServiceProvider.GetRequiredService<ApiClient>();
 
-                client.UpsertFileAsync(null)
-                    .ToObservable();
+                await client.UpsertFileAsync(null);
             }
         }
     }

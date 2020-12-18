@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using indexer.service.Clients;
+using indexer.service.Rx;
 using indexer.service.Support;
 using McMaster.Extensions.CommandLineUtils;
 
@@ -76,7 +77,7 @@ namespace indexer.service
                 .Throttle(TimeSpan.FromMilliseconds(100))
                 .TakeUntil(other => cancellationToken.IsCancellationRequested)
                 .Select(args => args.EventArgs)
-                .Subscribe(_observer);
+                .SubscribeAsync(_observer);
 
                 watcher.EnableRaisingEvents = true;
             }
